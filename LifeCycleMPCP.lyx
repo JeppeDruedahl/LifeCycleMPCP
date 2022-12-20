@@ -308,7 +308,7 @@ Recursive problem
 The recursive problem is:
 \begin_inset Formula 
 \begin{align}
-v_{t}(\alpha_{i},\beta_{i},\chi_{t},p_{t},m_{t}) & =\max_{c_{t}}\frac{c_{t}^{1-\sigma_{t}}}{1-\sigma_{t}}+\mathds{1}_{t+1<T}\beta_{i}v_{t+1}(\bullet_{t+1})+\mathds{1}_{t+1=T}\beta_{i}\nu\frac{(a_{t}+\underline{a})^{\sigma_{T_{r}}}}{1-\sigma_{T_{r}}}\label{eq:bellman}\\
+v_{t}(\alpha_{i},\beta_{i},\chi_{t},p_{t},m_{t}) & =\max_{c_{t}}\frac{c_{t}^{1-\sigma_{t}}}{1-\sigma_{t}}+\beta_{i}\left[\mathds{1}_{t+1<T}v_{t+1}(\bullet_{t+1})+\mathds{1}_{t+1=T}\nu\frac{(a_{t}+\underline{a})^{\sigma_{T_{r}}}}{1-\sigma_{T_{r}}}\right]\label{eq:bellman}\\
  & \text{s.t.}\nonumber \\
 \sigma_{t} & =\sigma_{0}\omega^{\min\{t,T_{r}\}}\nonumber \\
 a_{t} & =m_{t}-c_{t}\nonumber \\
@@ -316,9 +316,9 @@ p_{t+1} & =\psi_{t+1}^{\mathds{1}_{t+1<T_{r}}}p_{t}^{\rho},\,\,\,\log\psi_{t+1}\
 G_{t+1} & =G^{\min\{t+1,T_{r}\}}\nonumber \\
 \tilde{\xi}_{t+1} & =\begin{cases}
 \mu & \text{with prob. }\pi\\
-\frac{\xi_{t+1}^{\mathds{1}_{t+1<T_{r}}}-\pi\mu}{\mu} & \text{else}
+\frac{\xi_{t+1}-\pi\mu}{\mu} & \text{else}
 \end{cases},\,\,\,\log\xi_{t+1}\sim\mathcal{N}(-0.5\sigma_{\xi}^{2},\sigma_{\xi}^{2})\nonumber \\
-y_{t+1}^{\text{pre}} & =\phi^{\mathds{1}_{t+1<T_{r}}}\alpha_{i}G_{t+1}\tilde{\xi}_{t+1}p_{t+1}\nonumber \\
+y_{t+1}^{\text{pre}} & =\alpha_{i}G_{t+1}\phi^{\mathds{1}_{t+1\geq T_{r}}}\tilde{\xi}_{t+1}^{\mathds{1}_{t+1<T_{r}}}p_{t+1}\nonumber \\
 y_{t+1} & =y_{t+1}^{\text{pre}}-\tau\max\left\{ y_{t+1}^{\text{pre}}-\kappa,0\right\} \nonumber \\
 m_{t+1} & =Ra_{t}+y_{t+1}+\chi_{t}\Delta\nonumber \\
 \chi_{t+1} & =\chi_{t}\nonumber \\
@@ -354,16 +354,20 @@ c_{t}^{\star}(\alpha_{i},\beta_{i},\chi_{t},p_{t},m_{t}).\label{eq:c_ast}
 \end_layout
 
 \begin_layout Standard
-We can equivalently write it in terms of lagged assets,
+We can 
+\emph on
+equivalently
+\emph default
+ write it in terms of lagged assets,
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{align}
 c_{t}^{\star}(\alpha_{i},\beta_{i},\chi_{t},p_{t},a_{t-1},\tilde{\xi}_{t})= & c_{t}^{\star}(\alpha_{i},\beta_{i},\chi_{t},p_{t},m_{t}(\alpha_{i},\chi_{t},p_{t},a_{t-1},\tilde{\xi}_{t}))\label{eq:c_ast_a_lag}\\
-m_{t}(\alpha_{i},\chi_{t},p_{t},a_{t-1},\tilde{\xi}_{t})= & Ra_{t-1}+y_{t}+\chi_{t}\nonumber \\
+m_{t}(\alpha_{i},\chi_{t},p_{t},a_{t-1},\tilde{\xi}_{t})= & Ra_{t-1}+y_{t}+\chi_{t}\Delta\nonumber \\
  & G_{t}=G^{\min\{t,T_{r}\}}\nonumber \\
- & y_{t}^{\text{pre}}=\alpha_{i}G_{t}\tilde{\xi}_{t}p_{t}\nonumber \\
+ & y_{t}^{\text{pre}}=\alpha_{i}G_{t}\phi^{\mathds{1}_{t\geq T_{r}}}\tilde{\xi}_{t}^{\mathds{1}_{t<T_{r}}}p_{t}\nonumber \\
  & y_{t}=y_{t}^{\text{pre}}-\tau\max\left\{ y_{t}^{\text{pre}}-\kappa,0\right\} .\nonumber 
 \end{align}
 
@@ -500,10 +504,10 @@ The
 \series bold
 Marginal Propensity to Consume out of a 
 \emph on
-Permanent
+Persistent
 \emph default
  Shock (
-\begin_inset Formula $\text{MPCP}^{\text{perm}}$
+\begin_inset Formula $\text{MPCP}^{\text{pers}}$
 \end_inset
 
 )
@@ -511,7 +515,7 @@ Permanent
  is defined as
 \begin_inset Formula 
 \[
-\text{MPCP}^{\text{perm}}=\text{MPCP}^{\text{pers}}=\lim_{\Delta\rightarrow0}\frac{c_{t}^{\star}(\alpha_{i},\beta_{i},0,p_{t}+\Delta,a_{t-1},\tilde{\xi}_{t})-c_{t}^{\star}}{m_{t}(\alpha_{i},0,p_{t}+\Delta,a_{t-1},\tilde{\xi}_{t})-m_{t}}
+\text{MPCP}^{\text{pers}}=\lim_{\Delta\rightarrow0}\frac{c_{t}^{\star}(\alpha_{i},\beta_{i},0,p_{t}+\Delta,a_{t-1},\tilde{\xi}_{t})-c_{t}^{\star}}{m_{t}(\alpha_{i},0,p_{t}+\Delta,a_{t-1},\tilde{\xi}_{t})-m_{t}}
 \]
 
 \end_inset
@@ -559,21 +563,29 @@ elasticity of consumption to a scaling of income and savings (
 
 \end_inset
 
+In the first period with 
+\begin_inset Formula $a_{-1}=0$
+\end_inset
 
+ this is just a scaling of the whole income path.
 \end_layout
 
 \end_deeper
 \begin_layout Standard
 
 \series bold
-We have mainly interested in 
+We are mainly interested in 
 \begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}$
 \end_inset
 
 .
 
 \series default
- We have the following observations:
+ 
+\end_layout
+
+\begin_layout Standard
+We have the following observations:
 \end_layout
 
 \begin_layout Enumerate
@@ -652,15 +664,7 @@ Data sets
 \end_layout
 
 \begin_layout Standard
-We consider the following four data sets:
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-homotheticity_simple:
-\series default
- 
+Our baseline data set have 
 \begin_inset Formula $\omega=1$
 \end_inset
 
@@ -669,52 +673,36 @@ homotheticity_simple:
 \end_inset
 
 , 
-\begin_inset Formula $\tau>0$
+\begin_inset Formula $\tau=0$
 \end_inset
 
 , 
+\begin_inset Formula $\rho<1$
+\end_inset
+
+ 
 \begin_inset Formula $\iota=0$
 \end_inset
 
-: 
-\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}\approx1$
+ and therefore 
+\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}=1$
 \end_inset
 
+.
+\end_layout
 
+\begin_layout Standard
+We consider 
+\begin_inset Formula $2^{4}-1=15$
+\end_inset
+
+ alternative data sets with the naming convention:
 \end_layout
 
 \begin_layout Enumerate
 
 \series bold
-homotheticity_full:
-\series default
- 
-\begin_inset Formula $\omega=1$
-\end_inset
-
-, 
-\begin_inset Formula $\underline{a}=0$
-\end_inset
-
-, 
-\begin_inset Formula $\tau>0$
-\end_inset
-
-, 
-\begin_inset Formula $\iota>0$
-\end_inset
-
-: 
-\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}\approx1$
-\end_inset
-
-: 
-\end_layout
-
-\begin_layout Enumerate
-
-\series bold
-non_homotheticity_simple:
+*_non_homo:
 \series default
  
 \begin_inset Formula $\omega<1$
@@ -724,16 +712,8 @@ non_homotheticity_simple:
 \begin_inset Formula $\underline{a}>0$
 \end_inset
 
-, 
-\begin_inset Formula $\tau>0$
-\end_inset
-
-, 
-\begin_inset Formula $\iota=0$
-\end_inset
-
-: 
-\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}<1$
+: Big 
+\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}\downarrow$
 \end_inset
 
 
@@ -742,29 +722,49 @@ non_homotheticity_simple:
 \begin_layout Enumerate
 
 \series bold
-non_homotheticity_full:
+*_tau_homo:
 \series default
  
-\begin_inset Formula $\omega<1$
-\end_inset
-
-, 
-\begin_inset Formula $\underline{a}>0$
-\end_inset
-
-, 
 \begin_inset Formula $\tau>0$
 \end_inset
 
-, 
+: Small 
+\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}\downarrow$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+*_rho:
+\series default
+ 
+\begin_inset Formula $\rho<0$
+\end_inset
+
+: 
+\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}$
+\end_inset
+
+ unchanged 
+\end_layout
+
+\begin_layout Enumerate
+
+\series bold
+*_iota:
+\series default
+ 
 \begin_inset Formula $\iota>0$
 \end_inset
 
 : 
-\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}<1$
+\begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}$
 \end_inset
 
-
+ unchanged
 \end_layout
 
 \begin_layout Standard
@@ -774,7 +774,7 @@ Can we find a valid estimator for
 \begin_inset Formula $\text{MPCP}^{\text{\ensuremath{\text{scale}}}}$
 \end_inset
 
-?
+ which always work?
 \end_layout
 
 \end_body

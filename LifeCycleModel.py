@@ -90,7 +90,7 @@ class LifeCycleModelModelClass(ModelClass):
         par.mu = 0.50
         
         # e. grids (number of points)
-        par.Nalpha = 10
+        par.Nalpha = 20
         par.Nbeta = 10
 
         par.Np = 50
