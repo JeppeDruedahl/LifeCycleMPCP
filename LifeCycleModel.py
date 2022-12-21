@@ -60,7 +60,7 @@ class LifeCycleModelModelClass(ModelClass):
         par.sigma0 = 2.0
         par.omega = 1.0 
 
-        par.nu = 15.0
+        par.nu = 5.0
         par.aubar = 0.0
 
         par.iota = 0.0
@@ -84,14 +84,14 @@ class LifeCycleModelModelClass(ModelClass):
         # risk
         par.sigma_psi = 0.10
         par.Npsi = 4
-        par.sigma_xi = 0.1
+        par.sigma_xi = 0.0
         par.Nxi = 1
         par.pi = 0.05
         par.mu = 0.50
         
         # e. grids (number of points)
         par.Nalpha = 20
-        par.Nbeta = 10
+        par.Nbeta = 5
 
         par.Np = 50
         par.p_min = 0.1
@@ -109,7 +109,7 @@ class LifeCycleModelModelClass(ModelClass):
 
         # g. simulation
         par.simT = par.T
-        par.simN = 500_000
+        par.simN = 1_000_000
         par.sim_seed = 1998
         
     def allocate(self):
@@ -223,7 +223,7 @@ class LifeCycleModelModelClass(ModelClass):
     def simulate(self):
         """ simulate model """
 
-        with jit(self) as model: # can now call jitted functions 
+        with jit(self) as model:
 
             par = model.par
             sol = model.sol
@@ -255,6 +255,9 @@ class LifeCycleModelModelClass(ModelClass):
             # retirement
             sim.psi[par.Tr:,:] = 1.0
             sim.xi[par.Tr:,:] = 1.0
+
+            #sim.psi[:,:] = 1.0
+            #sim.xi[:,:] = 1.0
 
             # b. simulate
             simulate.lifecycle(sim,sol,par)
